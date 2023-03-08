@@ -15,9 +15,23 @@ for i in range(n_particles):
     vx, vy = m.sqrt(t)*vx/v1, m.sqrt(t)*vy/v1
     velocities.append([vx, vy])
 
-def iterate(csys, velocity):
+def iterate(csys, velocities, dt):
     # This function is to update the position of the particle in each iteration, taking into account boundaries
-    pass
+        for i in range(n_particles):
+        csys[i][0] = velocities[i][0] * dt + csys[i][0]
+        csys[i][1] = velocities[i][1] * dt + csys[i][1]
+        if csys[i][0]>1:
+            csys[i][0] = 2 - csys[i][0]
+            velocities[i][0]=-velocities[i][0]
+        if csys[i][1]>1:
+            csys[i][1] = 2 - csys[i][1]
+            velocities[i][1] = -velocities[i][1]
+        if csys[i][0]<0:
+            csys[i][0] = - csys[i][0]
+            velocities[i][0] = -velocities[i][0]
+        if csys[i][1]<0:
+            csys[i][1] = - csys[i][1]
+            velocities[i][1] = -velocities[i][1]
     return csys
 
 def collide(csys1, csys2):

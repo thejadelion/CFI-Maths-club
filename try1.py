@@ -1,5 +1,5 @@
 import random
-import math as m
+import math
 
 r = 0.002
 n_particles = 1000
@@ -12,8 +12,8 @@ t = float(input("Enter the temperature: "))
 for i in range(n_particles):
     vx = random.random()
     vy = random.random()
-    v1 = m.sqrt(vx**2+vy**2)
-    vx, vy = m.sqrt(t)*vx/v1, m.sqrt(t)*vy/v1
+    v1 = math.sqrt(vx**2+vy**2)
+    vx, vy = math.sqrt(t)*vx/v1, math.sqrt(t)*vy/v1
     velocities.append([vx, vy])
 
 def iterate(csys, velocities, dt):
@@ -41,14 +41,23 @@ def collide(csys1, csys2):
     # This function is to update the number of collisions in each iteration.
     # Removing the particles which have already collided (maybe with probability)
     count = 0
-    for i in range(1000):
+    clist = []
+    global n_particles
+    for i in range(n_particles):
         for j in range(i):
             if math.dist(csys1[i], csys1[j]) < 2*r or math.dist(csys2[i], csys2[j]) < 2*r:
                 count += 1
-                csys1.pop(i)
-                csys1.pop(j)
-                csys2.pop(i)
-                csys2.pop(j)
+                d = random.random()
+                if d < 0.3:
+                    if i not in clist:
+                        clist.append(i)
+                    if j not in clist:
+                        clist.append(j)
+    ctr = 0
+    n_particles -= len(clist)
+    for i in clist:
+        csys2.pop(i-ctr)
+        ctr += 1
     return count
 
 def controller():
@@ -68,4 +77,6 @@ def controller():
 
 
     print("Average collision rate is", collisions/tnow)
+
+controller()
 print(csys)

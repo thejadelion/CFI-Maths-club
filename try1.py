@@ -42,7 +42,7 @@ def collide(csys1, csys2):
     # Removing the particles which have already collided (maybe with probability)
     count = 0
     for i in range(1000):
-        for j in range(i):
+        for j in range(i-1):
             if math.dist(csys1[i], csys1[j]) < 2*r or math.dist(csys2[i], csys2[j]) < 2*r:
                 count += 1
                 csys1.pop(i)
